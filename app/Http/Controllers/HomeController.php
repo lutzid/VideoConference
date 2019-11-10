@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use \Pusher\Pusher;
 
 class HomeController extends Controller
 {
@@ -25,4 +26,20 @@ class HomeController extends Controller
     {
         return view('home');
     }
+
+    public function authenticate(Request $request){
+        $socketId = $request-> socket_id;
+        $channelName = $request -> channel_name;
+
+        $pusher = new Pusher('27c8f53e8578d77ac22d', '1efd2001e84337fae36a', '896786', [
+            'cluster' => 'ap1',
+            'encrypted' => true
+        ]);
+
+        $presence_data = ['name' => auth()->user()->name];
+        $key = $pusher->presence_auth($channelName, $socketId, auth()->id(), $presence_data);
+
+        return response($key);
+    }
+
 }
