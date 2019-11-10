@@ -20,16 +20,16 @@ class HomeController extends Controller
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
         return view('home');
     }
 
-    public function authenticate(Request $request){
-        $socketId = $request-> socket_id;
-        $channelName = $request -> channel_name;
+    public function authenticate(Request $request) {
+        $socketId = $request->socket_id;
+        $channelName = $request->channel_name;
 
         $pusher = new Pusher('27c8f53e8578d77ac22d', '1efd2001e84337fae36a', '896786', [
             'cluster' => 'ap1',
@@ -41,5 +41,4 @@ class HomeController extends Controller
 
         return response($key);
     }
-
 }

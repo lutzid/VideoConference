@@ -52,7 +52,7 @@ export default class App extends Component{
             auth: {
                 params: this.user.id,
                 headers: {
-                    'x-CSRF-Token': window.csrfToken
+                    'X-CSRF-Token': window.csrfToken
                 }
             }
         });
