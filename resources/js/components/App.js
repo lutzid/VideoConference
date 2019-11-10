@@ -125,7 +125,7 @@ export default class App extends Component{
 
                 {/* Button to call others */}
                 {[1,2,3,4].map((userId) => {
-                    return this.user.id != userId ? <button onClick = {() => this.callTo(userId)}>Call {userId}</button> : null;
+                    return this.user.id != userId ? <button key={userId} onClick = {() => this.callTo(userId)}>Call {userId}</button> : null;
                 })}
 
                 <div className="video-container">

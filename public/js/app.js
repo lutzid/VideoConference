@@ -83499,7 +83499,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-var APP_KEY = '83c9614fa128f8d6027a';
+var APP_KEY = '27c8f53e8578d77ac22d';
 
 var App =
 /*#__PURE__*/
@@ -83549,7 +83549,8 @@ function (_Component) {
 
         _this2.myVideo.play();
       });
-    }
+    } //Setting Pusher
+
   }, {
     key: "setupPusher",
     value: function setupPusher() {
@@ -83557,7 +83558,7 @@ function (_Component) {
 
       this.pusher = new pusher_js__WEBPACK_IMPORTED_MODULE_3___default.a(APP_KEY, {
         authEndpoint: '/pusher/auth',
-        cluster: 'ap2',
+        cluster: 'ap1',
         auth: {
           params: this.user.id,
           headers: {
@@ -83577,8 +83578,11 @@ function (_Component) {
 
           peer = _this3.startPeer(signal.userId, false);
         }
+
+        peer.signal(signal.data);
       });
-    }
+    } //Start Peer
+
   }, {
     key: "startPeer",
     value: function startPeer(userId) {
@@ -83615,6 +83619,7 @@ function (_Component) {
 
         _this4.peers[userId] = undefined;
       });
+      return peer;
     } //Call other users
 
   }, {
@@ -83631,6 +83636,7 @@ function (_Component) {
         className: "App"
       }, [1, 2, 3, 4].map(function (userId) {
         return _this5.user.id != userId ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          key: userId,
           onClick: function onClick() {
             return _this5.callTo(userId);
           }
