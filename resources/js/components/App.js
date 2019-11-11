@@ -19,8 +19,8 @@ export default class App extends Component{
         this.user.stream = null;
         this.peers = {};
 
+        //Request mic & webcam permission
         this.mediaHandler = new MediaHandler();
-        
         this.setupPusher();
 
         this.callTo = this.callTo.bind(this);
@@ -28,6 +28,7 @@ export default class App extends Component{
         this.startPeer = this.startPeer.bind(this);
     }
 
+    //If permission is granted, load video 
     componentWillMount(){
         this.mediaHandler.getPermission()
             .then((stream)=>{
@@ -46,7 +47,9 @@ export default class App extends Component{
 
     //Setting Pusher
     setupPusher() {
+        Pusher.logToConsole = true;
         this.pusher = new Pusher(APP_KEY, {
+            // authHost: "http://localhost/videoconference/public",
             authEndpoint: '/pusher/auth',
             cluster: 'ap1',
             auth: {
@@ -57,14 +60,15 @@ export default class App extends Component{
             }
         });
 
-        this.channel = this.pusher.subscribe('presence-video-chanel');
+        //Subscribe to channel
+        this.channel = this.pusher.subscribe('presence-video-channel');
 
         this.channel.bind('client-signal-${this.user.id}', (signal) => {
             
             //If a peer is already open
             let peer = this.peers[signal.userId]; 
 
-            //If peer is not already exists, we got an incoming call
+            //If peer doesn't exist yet (incoming call)
             if(peer == undefined) {
                 this.setState({otherUserId: signal.userID});
                 peer = this.startPeer(signal.userId, false); 
@@ -83,6 +87,7 @@ export default class App extends Component{
             trickle: false
         });
 
+        //When getting a signal, signal back
         peer.on('signal', (data) => {
             this.channel.trigger('client-signal-${userId}', {
                 type: 'signal',
@@ -91,6 +96,7 @@ export default class App extends Component{
             });
         });
 
+        //When on stream
         peer.on('stream', (stream) => {
             try{
                 this.userVideo.srcObject = stream;
@@ -102,6 +108,7 @@ export default class App extends Component{
 
         });
 
+        //When closed, destroy peer
         peer.on('close', () => {
             let peer = this.peers[UserId];
             if (peer != undefined) {
@@ -119,6 +126,7 @@ export default class App extends Component{
         this.peers[userId] = this.startPeer(userId);
     }
     
+    //To display the video 
     render(){
         return (
             <div className="App">

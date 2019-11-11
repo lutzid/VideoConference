@@ -1,3 +1,4 @@
+// For mic & webcam permissions
 export default class MediaHandler {
     getPermission(){
         return new Promise((resolve, rej)=>{

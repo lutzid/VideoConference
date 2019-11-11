@@ -14,8 +14,8 @@
     @if(auth()->user())
     <script>
         window.user = {
+            name: "{{ auth()->user()->name }}",
             id: {{ auth()->id() }},
-            name: "{{ auth()->user()->name }}"
         };
 
         window.csrfToken = "{{ csrf_token() }}";

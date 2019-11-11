@@ -83527,7 +83527,8 @@ function (_Component) {
     _this.setupPusher = _this.setupPusher.bind(_assertThisInitialized(_this));
     _this.startPeer = _this.startPeer.bind(_assertThisInitialized(_this));
     return _this;
-  }
+  } //If permission is granted, load video 
+
 
   _createClass(App, [{
     key: "componentWillMount",
@@ -83556,20 +83557,22 @@ function (_Component) {
     value: function setupPusher() {
       var _this3 = this;
 
+      pusher_js__WEBPACK_IMPORTED_MODULE_3___default.a.logToConsole = true;
       this.pusher = new pusher_js__WEBPACK_IMPORTED_MODULE_3___default.a(APP_KEY, {
         authEndpoint: '/pusher/auth',
         cluster: 'ap1',
         auth: {
           params: this.user.id,
           headers: {
-            'x-CSRF-Token': window.csrfToken
+            'X-CSRF-Token': window.csrfToken
           }
         }
-      });
-      this.channel = this.pusher.subscribe('presence-video-chanel');
+      }); //Subscribe to channel
+
+      this.channel = this.pusher.subscribe('presence-video-channel');
       this.channel.bind('client-signal-${this.user.id}', function (signal) {
         //If a peer is already open
-        var peer = _this3.peers[signal.userId]; //If peer is not already exists, we got an incoming call
+        var peer = _this3.peers[signal.userId]; //If peer doesn't exist yet (incoming call)
 
         if (peer == undefined) {
           _this3.setState({
@@ -83593,14 +83596,16 @@ function (_Component) {
         initiator: initiator,
         stream: this.user.stream,
         trickle: false
-      });
+      }); //When getting a signal, signal back
+
       peer.on('signal', function (data) {
         _this4.channel.trigger('client-signal-${userId}', {
           type: 'signal',
           userId: _this4.user.id,
           data: data
         });
-      });
+      }); //When on stream
+
       peer.on('stream', function (stream) {
         try {
           _this4.userVideo.srcObject = stream;
@@ -83609,7 +83614,8 @@ function (_Component) {
         }
 
         _this4.userVideo.play();
-      });
+      }); //When closed, destroy peer
+
       peer.on('close', function () {
         var peer = _this4.peers[UserId];
 
