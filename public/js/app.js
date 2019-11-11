@@ -83358,6 +83358,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+// For mic & webcam permissions
 var MediaHandler =
 /*#__PURE__*/
 function () {
@@ -83499,7 +83500,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-var APP_KEY = '27c8f53e8578d77ac22d';
+var APP_KEY = '668b47dac362378e2cfc';
 
 var App =
 /*#__PURE__*/
@@ -83518,7 +83519,8 @@ function (_Component) {
     };
     _this.user = window.user;
     _this.user.stream = null;
-    _this.peers = {};
+    _this.peers = {}; //Request mic & webcam permission
+
     _this.mediaHandler = new _MediaHandler__WEBPACK_IMPORTED_MODULE_2__["default"]();
 
     _this.setupPusher();
@@ -83559,6 +83561,7 @@ function (_Component) {
 
       pusher_js__WEBPACK_IMPORTED_MODULE_3___default.a.logToConsole = true;
       this.pusher = new pusher_js__WEBPACK_IMPORTED_MODULE_3___default.a(APP_KEY, {
+        // authHost: "http://localhost/videoconference/public",
         authEndpoint: '/pusher/auth',
         cluster: 'ap1',
         auth: {
@@ -83632,7 +83635,8 @@ function (_Component) {
     key: "callTo",
     value: function callTo(userId) {
       this.peers[userId] = this.startPeer(userId);
-    }
+    } //To display the video 
+
   }, {
     key: "render",
     value: function render() {
