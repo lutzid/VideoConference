@@ -2,14 +2,21 @@
 
 -Put this into your .env file
 
-PUSHER_APP_ID=896786,
+PUSHER_APP_ID=897253
 
-PUSHER_APP_KEY=27c8f53e8578d77ac22d,
 
-PUSHER_APP_SECRET=1efd2001e84337fae36a
+PUSHER_APP_KEY=668b47dac362378e2cfc
+
+
+PUSHER_APP_SECRET=b40caa45944267a15a47
+
+
+PUSHER_APP_CLUSTER=ap1
+
 
 
 -Bug
+
 Error in route section can't get /pusher/auth
 
 
