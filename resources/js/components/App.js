@@ -47,11 +47,10 @@ export default class App extends Component{
 
     //Setting Pusher
     setupPusher() {
-        Pusher.logToConsole = true;
+        // Pusher.logToConsole = true;
         this.pusher = new Pusher(APP_KEY, {
-            // authHost: "http://localhost/videoconference/public",
-            authEndpoint: '/pusher/auth',
             cluster: 'ap1',
+            authEndpoint: '/pusher/auth',
             auth: {
                 params: this.user.id,
                 headers: {
@@ -69,7 +68,7 @@ export default class App extends Component{
             let peer = this.peers[signal.userId]; 
 
             //If peer doesn't exist yet (incoming call)
-            if(peer == undefined) {
+            if(peer === undefined) {
                 this.setState({otherUserId: signal.userID});
                 peer = this.startPeer(signal.userId, false); 
             }
@@ -110,8 +109,8 @@ export default class App extends Component{
 
         //When closed, destroy peer
         peer.on('close', () => {
-            let peer = this.peers[UserId];
-            if (peer != undefined) {
+            let peer = this.peers[userId];
+            if (peer !== undefined) {
                 peer.destroy();
             }
 
